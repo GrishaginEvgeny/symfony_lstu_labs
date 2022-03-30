@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+<style>
+</style>
+</style>
+    <div class="container">
+        <!— main header —>
+        <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom">
+            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                <img class="bi me-2" width="40" height="40" src="{{ asset("build/images/logo.svg") }}"/>
+                <span class="fs-4">Simple header</span>
+            </a>
+
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                {%  for menu_element in menu  %}
+                <li><a href="#" class="nav-link px-2 link-dark">{{ menu_element }}</a></li>
+                {% endfor %}
+            </ul>
+
+            <div class="col-md-3 text-end">
+                <button type="button" class="btn btn-primary">Login</button>
+                <button type="button" class="btn btn-primary">Sign-up</button>
+            </div>
+        </header>
+        <div class="nav-scroller py-1 mb-2">
+            <nav class="nav d-flex justify-content-between">
+                <a class="p-2 link-secondary" href="#">World</a>
+                <a class="p-2 link-secondary" href="#">U.S.</a>
+                <a class="p-2 link-secondary" href="#">Technology</a>
+                <a class="p-2 link-secondary" href="#">Design</a>
+                <a class="p-2 link-secondary" href="#">Culture</a>
+                <a class="p-2 link-secondary" href="#">Business</a>
+                <a class="p-2 link-secondary" href="#">Politics</a>
+                <a class="p-2 link-secondary" href="#">Opinion</a>
+                <a class="p-2 link-secondary" href="#">Science</a>
+                <a class="p-2 link-secondary" href="#">Health</a>
+                <a class="p-2 link-secondary" href="#">Style</a>
+                <a class="p-2 link-secondary" href="#">Travel</a>
+            </nav>
+        </div>
+       </div>
+        <!— Order —>
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <p class="text-center">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Найти блог" aria-label="Find blog" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Найти</button>
+                </div>
+                </p>
+            </div>
+        </div>
+        <!— body —>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {%  for user in users %}
+                <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-success">{{ user.getBlogCategory() }}</strong>
+                            <h3 class="mb-0">{{ user.getBlogName()  }}</h3>
+                            <div class="mb-1 text-muted">Nov 11</div>
+                            <p class="mb-auto">{{ user.getBlogCaption() }}</p>
+                            <a href="#">Continue reading</a>
+                        </div>
+                        <div class="col-auto d-none d-lg-block">
+                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <!— Footer —>
+        <div class="container">
+            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+                <div class="col-md-4 d-flex align-items-center">
+                    <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+                    </a>
+                    <span class="text-muted">© 2021 Company, Inc</span>
+                </div>
+
+                <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+                    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+                    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+                </ul>
+            </footer>
+        </div>
+    </div>
+{% endblock %}

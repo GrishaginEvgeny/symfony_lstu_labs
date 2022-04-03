@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PostController!{% endblock %}
+
+{% block body %}
+<!-- Header -->
+    <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom">
+        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+            <img class="bi me-2" width="40" height="40" src="{{ asset("build/images/logo.svg") }}"/>
+            <span class="fs-4">PM-bloGG</span>
+        </a>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="#" class="nav-link px-2 link-dark">Главная</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">О нас</a></li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <button type="button" class="btn btn-primary">Login</button>
+            <button type="button" class="btn btn-primary">Sign-up</button>
+        </div>
+    </div>
+    <div class="nav-scroller py-1 mb-2">
+        <nav class="nav d-flex justify-content-between">
+            <a class="p-2 link-secondary" href="#">World</a>
+            <a class="p-2 link-secondary" href="#">U.S.</a>
+            <a class="p-2 link-secondary" href="#">Technology</a>
+            <a class="p-2 link-secondary" href="#">Design</a>
+            <a class="p-2 link-secondary" href="#">Culture</a>
+            <a class="p-2 link-secondary" href="#">Business</a>
+            <a class="p-2 link-secondary" href="#">Politics</a>
+            <a class="p-2 link-secondary" href="#">Opinion</a>
+            <a class="p-2 link-secondary" href="#">Science</a>
+            <a class="p-2 link-secondary" href="#">Health</a>
+            <a class="p-2 link-secondary" href="#">Style</a>
+            <a class="p-2 link-secondary" href="#">Travel</a>
+        </nav>
+    </div>
+</div>
+
+<!-- Order -->
+    <div class="container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="display-5 fw-bold text-center">
+                {{ post.getTitle() }}
+            </h1>
+        </div>
+    </div>
+</div>
+
+  <!--Main layout-->
+    <div class="container">
+        <div class="container">
+          <!--Section: Post data-mdb-->
+          <div class="border-bottom pb-2 d-flex justify-content-center">
+              {% if post.getPictures()|length == 1 %}
+                  <img class="text-center shadow-1-strong"
+                       src="{{ asset('build/images/'~post.getPictures()[0]) }}"  width="500"
+                       height="500" />
+              {% elseif post.getPictures()|length > 1 %}
+                  <div id="myCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+                      <!-- Нижние кнопки -->
+                      <div class="carousel-indicators">
+                          {% for pic in post.getPictures() %}
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ loop.index }}"
+                                      {% if loop.index == 0 %} class="active" {% endif %}
+                                      aria-label="Slide {{ loop.index }}" {% if loop.index == 0 %} aria-current="true"{% endif %}></button>
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
+                          {% endfor %}
+                      </div>
+                      <!-- Картинки -->
+                      <div class="carousel-inner">
+                          {% for pic in post.getPictures() %}
+                              <div class="carousel-item {% if loop.index == 0 %} active {% endif %}">
+                                  <div class="container d-flex justify-content-center">
+                                      <img class="text-center shadow-1-strong me-3"
+                                           src="src={{ asset('build/images/'~pic) }}" alt="avatar" width="500"
+                                           height="500" />
+                                  </div>
+                              </div>
+                          {% endfor %}
+                      </div>
+                      <!-- Слайдеры -->
+                      <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                      </button>
+                  </div>
+              {% endif %}
+          </div>
+        </div>
+    </div>
+
+
+    <!--Section: Text-->
+    <div class="container">
+      <div class="border-bottom mb-2 mx-auto">
+       {{ post.getText() }}
+      </div>
+    </div>
+
+    <div class="container align-items-center border-bottom">
+      <div class="text-center mb-3 mt-3">
+        <img src="{{ asset('build/images/'~author.getUserAvatar()) }}" class="rounded-5 shadow-1-strong me-2"
+          height="35" alt="" loading="lazy" />
+        <span> Published <u>{{ post.getAddDate()|date("h:m:s d/m/y")  }}</u> by</span>
+        <a href="" class="text-dark">{{ author.getName() }}</a>
+      </div>
+    </div>
+
+    <div class="container">
+        <!-- TODO -->
+      <p class="text-center"><strong>Leave a comment</strong></p>
+      <form>
+        <div class="form-outline mb-4">
+          <img class="rounded-circle shadow-1-strong me-3"
+          src="" alt="avatar" width="60"
+          height="60" />
+          <h6 class="fw-bold mb-1">Name</h6>
+          <textarea class="form-control" id="form4Example3" rows="4"></textarea>
+        </div>
+          <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">
+          Отправить комментарий
+        </button>
+      </form>
+    </div>
+
+    <!-- Comments -->
+    <div style="background-color: #ffffff;" class="container">
+              <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                  <div class="card text-dark">
+                    <div class="ms-3 mt-3">
+                      <h4 class="mb-0">Recent comments</h4>
+                      <p class="fw-light mb-2">Latest Comments section by users</p>
+                    </div>
+                  {% for comment in comments %}
+                    <div class="card-body p-4">
+
+                      <div class="d-flex flex-start">
+                        <img class="rounded-circle shadow-1-strong me-3"
+                          src="{{ asset('build/images/'~comment.getUser().getUserAvatar()) }}" alt="avatar" width="60"
+                          height="60" />
+                        <div>
+                          <h6 class="fw-bold mb-1">{{ comment.getUser().getName() }}</h6>
+                          <div class="d-flex align-items-center mb-3">
+                            <p class="mb-0">
+                              March 07, 2021
+                              <span class="badge bg-primary">Pending</span>
+                            </p>
+                            <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                            <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
+                            <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                          </div>
+                          <p class="mb-0">
+                            {{ comment.getText() }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr class="my-0" />
+                  {% endfor %}
+                  </div>
+                </div>
+              </div>
+    </div>
+    <!-- Footer -->
+    <div class="container">
+            <footer class="d-flex flex-wrap justify-content-center align-items-center py-3 my-4 border-top">
+                <div class="col-md-4 d-flex justify-content-center align-items-center">
+                    <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+                    </a>
+                    <span class="text-muted">© 2021 Company, Inc</span>
+                </div>
+            </footer>
+    </div>
+{% endblock %}

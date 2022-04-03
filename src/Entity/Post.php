@@ -72,14 +72,14 @@ class Post
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getText(): ?string
     {
-        return $this->description;
+        return $this->text;
     }
 
-    public function setDescription(string $description): self
+    public function setText(string $description): self
     {
-        $this->description = $description;
+        $this->text = $description;
 
         return $this;
     }

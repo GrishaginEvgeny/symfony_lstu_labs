@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Entity\Post;
+use App\Entity\Comment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,6 +47,15 @@ class User implements PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private $blog_category;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $blog_picture;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $user_avatar;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $blog_token;
 
     public function __construct()
     {
@@ -209,6 +220,42 @@ class User implements PasswordAuthenticatedUserInterface
     public function setBlogCategory(string $blog_category): self
     {
         $this->blog_category = $blog_category;
+
+        return $this;
+    }
+
+    public function getBlogPicture(): ?string
+    {
+        return $this->blog_picture;
+    }
+
+    public function setBlogPicture(?string $blog_picture): self
+    {
+        $this->blog_picture = $blog_picture;
+
+        return $this;
+    }
+
+    public function getUserAvatar(): ?string
+    {
+        return $this->user_avatar;
+    }
+
+    public function setUserAvatar(?string $user_avatar): self
+    {
+        $this->user_avatar = $user_avatar;
+
+        return $this;
+    }
+
+    public function getBlogToken(): ?string
+    {
+        return $this->blog_token;
+    }
+
+    public function setBlogToken(string $blog_token): self
+    {
+        $this->blog_token = $blog_token;
 
         return $this;
     }

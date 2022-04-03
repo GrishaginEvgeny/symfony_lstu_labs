@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Главная страница{% endblock %}
 
 {% block body %}
 <style>
@@ -12,7 +12,7 @@
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom">
             <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
                 <img class="bi me-2" width="40" height="40" src="{{ asset("build/images/logo.svg") }}"/>
-                <span class="fs-4">Simple header</span>
+                <span class="fs-4">PM-bloGG</span>
             </a>
 
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
@@ -64,11 +64,15 @@
                             <h3 class="mb-0">{{ user.getBlogName()  }}</h3>
                             <div class="mb-1 text-muted">Nov 11</div>
                             <p class="mb-auto">{{ user.getBlogCaption() }}</p>
-                            <a href="#">Continue reading</a>
+                            <div class="d-flex justify-content-between">
+                                <a href="/blog/{{ user.getBlogToken() }}">Перейти к блогу</a>
+                                <a href="/user/{{ user.getToken() }}">Профиль автора</a>
+                            </div>
                         </div>
                         <div class="col-auto d-none d-lg-block">
-                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
+                            <a href="/blog/{{ user.getBlogToken() }}">
+                                <img class="bi" width="200" height="250" src="{{ asset('build/images/'~user.getBlogPicture()) }}"/>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -76,20 +80,14 @@
         </div>
         <!— Footer —>
         <div class="container">
-            <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-                <div class="col-md-4 d-flex align-items-center">
+            <div class="d-flex flex-wrap justify-content-center align-items-center py-3 my-4 border-top">
+                <div class="col-md-4 d-flex justify-content-center align-items-center">
                     <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
                         <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
                     </a>
                     <span class="text-muted">© 2021 Company, Inc</span>
                 </div>
-
-                <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-                    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-                    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-                </ul>
-            </footer>
+            </div>
         </div>
     </div>
 {% endblock %}

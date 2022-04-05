@@ -8,33 +8,37 @@ use App\Entity\Comment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Bundle\MakerBundle\Doctrine\RelationOneToMany;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements PasswordAuthenticatedUserInterface
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $email;
+    private string $email;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $password;
+    private string $password;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $token;
+    private string $token;
 
     #[ORM\Column(type: 'boolean')]
-    private $isAdmin = false;
+    private bool $isAdmin = false;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $blog_name;
+    private string $blog_name;
 
     #[ORM\OneToMany(mappedBy: 'relation', targetEntity: Comment::class)]
     private $comments;
@@ -43,19 +47,22 @@ class User implements PasswordAuthenticatedUserInterface
     private $posts;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $blog_caption;
+    private string $blog_caption;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $blog_category;
+    private string $blog_category;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $blog_picture;
+    private string $blog_picture;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $user_avatar;
+    private string $user_avatar;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $blog_token;
+    private string $blog_token;
+
+    #[ORM\Column(type: "json")]
+    private array $roles = [];
 
     public function __construct()
     {
@@ -66,6 +73,31 @@ class User implements PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function eraseCredentials()
+    {
+
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getName(): ?string

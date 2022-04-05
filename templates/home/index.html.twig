@@ -7,42 +7,7 @@
 </style>
 </style>
     <div class="container">
-        <!— main header —>
-        <div class="container">
-        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 border-bottom">
-            <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-                <img class="bi me-2" width="40" height="40" src="{{ asset("build/images/logo.svg") }}"/>
-                <span class="fs-4">PM-bloGG</span>
-            </a>
-
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                {%  for menu_element in menu  %}
-                <li><a href="#" class="nav-link px-2 link-dark">{{ menu_element }}</a></li>
-                {% endfor %}
-            </ul>
-
-            <div class="col-md-3 text-end">
-                <button type="button" class="btn btn-primary">Login</button>
-                <button type="button" class="btn btn-primary">Sign-up</button>
-            </div>
-        </header>
-        <div class="nav-scroller py-1 mb-2">
-            <nav class="nav d-flex justify-content-between">
-                <a class="p-2 link-secondary" href="#">World</a>
-                <a class="p-2 link-secondary" href="#">U.S.</a>
-                <a class="p-2 link-secondary" href="#">Technology</a>
-                <a class="p-2 link-secondary" href="#">Design</a>
-                <a class="p-2 link-secondary" href="#">Culture</a>
-                <a class="p-2 link-secondary" href="#">Business</a>
-                <a class="p-2 link-secondary" href="#">Politics</a>
-                <a class="p-2 link-secondary" href="#">Opinion</a>
-                <a class="p-2 link-secondary" href="#">Science</a>
-                <a class="p-2 link-secondary" href="#">Health</a>
-                <a class="p-2 link-secondary" href="#">Style</a>
-                <a class="p-2 link-secondary" href="#">Travel</a>
-            </nav>
-        </div>
-       </div>
+        {{ include('header.html.twig') }}
         <!— Order —>
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">

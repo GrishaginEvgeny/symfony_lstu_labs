@@ -37,6 +37,7 @@ class AppFixtures extends Fixture
             $user->setBlogPicture('b-'.(($i+1)%2).'.png');
             $user->setUserAvatar('u-'.(($i+1)%2).'.jpg');
             $user->setBlogToken('blog_token_'.$i);
+            $user->setRoles([]);
             $manager->persist($user);
 
             $date = new \DateTime('@'.strtotime('now'));

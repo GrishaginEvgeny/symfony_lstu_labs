@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +19,20 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $categories = [
+            'В мире' => 'В мире',
+            'Россия' => 'Россия',
+            'Технологии' => 'Технологии',
+            'Дизайн' => 'Дизайн',
+            'Культура' => 'Культура',
+            'Бизнес'=> 'Бизнес',
+            'Политика' => 'Политика',
+            'IT'=> 'IT',
+            'Наука'=> 'Наука',
+            'Здоровье'=> 'Здоровье',
+            'Спорт' => 'Спорт',
+            'Путешествия' => 'Путешествия'];
+        $form = $this->createForm(RegistrationFormType::class, $user, ['categories' => $categories]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

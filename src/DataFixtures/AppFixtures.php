@@ -22,21 +22,30 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $categories = ['Sport', 'Politic', 'IT'];
+        $categories = [
+            'В мире',
+            'Россия',
+            'Технологии',
+            'Дизайн',
+            'Культура',
+            'Бизнес',
+            'Политика',
+            'IT',
+            'Наука',
+            'Здоровье',
+            'Спорт',
+            'Путешествия'];;
         for ($i = 0; $i < 20; $i++) {
             $user = new User();
             $user->setName('BobForTest'.$i);
             $user->setEmail('test@email.for');
             $password = $this->hasher->hashPassword($user, 'test');
             $user->setPassword($password);
-            $user->setToken('user_token_'.$i);
-            $user->setIsAdmin(false);
-            $user->setBlogName('test-blog-name'.$i);
-            $user->setBlogCaption('test-blog-name'.$i.'-caption');
-            $user->setBlogCategory($categories[rand(0,2)]);
+            $user->setBlogName('test_blog_name'.$i);
+            $user->setBlogCaption('test_blog_name'.$i.'-caption');
+            $user->setBlogCategory($categories[rand(0,11)]);
             $user->setBlogPicture('b-'.(($i+1)%2).'.png');
             $user->setUserAvatar('u-'.(($i+1)%2).'.jpg');
-            $user->setBlogToken('blog_token_'.$i);
             $user->setRoles([]);
             $manager->persist($user);
 

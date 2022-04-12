@@ -3,18 +3,17 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use App\Entity\Post;
-use App\Entity\Comment;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Bundle\MakerBundle\Doctrine\RelationOneToMany;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Пользователь с там e-mail уже существует', errorPath: 'email')]
+#[UniqueEntity(fields: ['name'], message: 'Пользователь с там именем уже существует', errorPath: 'name')]
+#[UniqueEntity(fields: ['blog_name'], message: 'Пользователь с таким именем блога уже сущестувет', errorPath: 'blog_name')]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
@@ -30,12 +29,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $password;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $token;
-
-    #[ORM\Column(type: 'boolean')]
-    private bool $isAdmin = false;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $blog_name;
@@ -58,8 +51,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private string $user_avatar;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $blog_token;
 
     #[ORM\Column(type: "json")]
     private array $roles = [];
@@ -132,30 +123,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    public function setToken(string $token): self
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
-    public function getIsAdmin(): ?bool
-    {
-        return $this->isAdmin;
-    }
-
-    public function setIsAdmin(bool $isAdmin): self
-    {
-        $this->isAdmin = $isAdmin;
 
         return $this;
     }
@@ -280,15 +247,4 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;
     }
 
-    public function getBlogToken(): ?string
-    {
-        return $this->blog_token;
-    }
-
-    public function setBlogToken(string $blog_token): self
-    {
-        $this->blog_token = $blog_token;
-
-        return $this;
-    }
 }

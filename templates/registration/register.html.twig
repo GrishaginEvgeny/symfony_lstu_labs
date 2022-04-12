@@ -104,23 +104,6 @@
                 }}) }}
                 <small id="blogcatHelp" class="form-text text-muted mb-0">{{ form_help(registrationForm.blog_category) }}</small>
             </div>
-            <!-- Blog_token -->
-            <div class="form-group mb-2">
-                {{ form_label(registrationForm.blog_token) }}
-                <div class="text-danger m-0">
-                    {{ form_errors(registrationForm.blog_token) }}
-                </div>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">/</span>
-                    </div>
-                    {{ form_widget(registrationForm.blog_token, {'attr':{
-                        'class': 'form-control',
-                        'aria-describedby': 'blogtokenHelp',
-                    }}) }}
-                </div>
-                <small id="blogtokenHelp" class="form-text text-muted mb-0">{{ form_help(registrationForm.blog_token) }}</small>
-            </div>
             <!-- Blog_picture -->
             <div class="form-group mb-2">
                 {{ form_label(registrationForm.blog_picture) }}
@@ -135,11 +118,16 @@
             </div>
 
             <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="flexCheckChecked">
-                <label class="form-check-label" for="flexCheckDefault">
-                    <a href="#">Принимаю условия пользовательского соглашения</a>
-                </label>
+                {{ form_widget(registrationForm.agree_checkbox, {'attr':{
+                    'class': 'form-check-input',
+                    'type' : 'checkbox',
+                }}) }}
+                {{ form_label(registrationForm.agree_checkbox) }}
             </div>
+            <div class="text-danger m-0">
+                {{ form_errors(registrationForm.agree_checkbox) }}
+            </div>
+
 
             <div class="button_container text-center">
                 <button type="submit" class="btn btn-primary ">Зарегистрироваться</button>

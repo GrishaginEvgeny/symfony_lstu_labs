@@ -35,10 +35,10 @@ class AppFixtures extends Fixture
             'Здоровье',
             'Спорт',
             'Путешествия'];;
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $user = new User();
             $user->setName('BobForTest'.$i);
-            $user->setEmail('test@email.for');
+            $user->setEmail('test@email'.$i.'.for');
             $password = $this->hasher->hashPassword($user, 'test');
             $user->setPassword($password);
             $user->setBlogName('test_blog_name'.$i);

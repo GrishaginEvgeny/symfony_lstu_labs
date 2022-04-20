@@ -1,0 +1,43 @@
+{# templates/login/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %} Auth {% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+    <!-- Order -->
+    <div class="container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="display-5 fw-bold text-center">
+                    Авторизация
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="margin-bottom: 200px;">
+        <div class="col-8 mx-auto">
+            <form action="{{ path('app_login') }}" method="post">
+                <label for="email" class="form-label">Email:</label>
+                <input type="text" id="email" name="_username" class="form-control" value="{{ last_username }}"/>
+
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="password" name="_password"/>
+
+                {# If you want to control the URL the user is redirected to on success
+                <input type="hidden" name="_target_path" value="/account"/> #}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="button_container text-center">
+                    <button type="submit" class="btn btn-primary mt-3 mx-auto">Войти</button>
+                </div>
+            </form>
+
+            {% if error %}
+                <div class="invalid-feedback text-center" style="display: block">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!— Footer —>
+    {{ include('footer.html.twig') }}
+{% endblock %}

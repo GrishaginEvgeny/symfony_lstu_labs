@@ -9,7 +9,7 @@
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <img class="rounded-circle shadow-1-strong"
-                     src="{{ asset('build/images/'~blog.getBlogPicture()) }}" alt="avatar" width="200"
+                     src="{{ asset('uploads/avatars/blogs/'~blog.getBlogPicture()) }}" alt="avatar" width="200"
                      height="200" />
                 <h1 class="fw-light">{{ blog.getBlogName() }}</h1>
                 <p class="lead text-muted">{{ blog.getBlogCaption() }}</p>
@@ -29,7 +29,7 @@
                 <div class="col">
                     <div class="card shadow-sm">
                         <a href="/post/{{ post.getId() }}">
-                            <img class="bi" width="100%" height="220" src="{{ asset('build/images/'~post.getPictures()[0]) }}"/>
+                            <img class="bi" width="100%" height="220" src="{{ asset('uploads/posts/'~post.getPictures()[0]) }}"/>
                         </a>
                         <div class="card-body">
                             <p class="card-text">{{ post.getText() }}</p>
@@ -46,4 +46,7 @@
             </div>
         </div>
     </div>
+
+    <!— Footer —>
+    {{ include('footer.html.twig') }}
 {% endblock %}

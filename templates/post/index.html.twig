@@ -23,7 +23,7 @@
           <div class="border-bottom pb-2 d-flex justify-content-center">
               {% if post.getPictures()|length == 1 %}
                   <img class="text-center shadow-1-strong"
-                       src="{{ asset('build/images/'~post.getPictures()[0]) }}"  width="500"
+                       src="{{ asset('uploads/posts/'~post.getPictures()[0]) }}"  width="500"
                        height="500" />
               {% elseif post.getPictures()|length > 1 %}
                   <div id="myCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
@@ -43,7 +43,7 @@
                               <div class="carousel-item {% if loop.index == 0 %} active {% endif %}">
                                   <div class="container d-flex justify-content-center">
                                       <img class="text-center shadow-1-strong me-3"
-                                           src="src={{ asset('build/images/'~pic) }}" alt="avatar" width="500"
+                                           src="src={{ asset('uploads/posts/'~pic) }}" alt="avatar" width="500"
                                            height="500" />
                                   </div>
                               </div>
@@ -66,15 +66,15 @@
 
 
     <!--Section: Text-->
-    <div class="container">
-      <div class="border-bottom mb-2 mx-auto">
+    <div class="container border-bottom">
+      <div class="my-3 mx-auto">
        {{ post.getText() }}
       </div>
     </div>
 
     <div class="container align-items-center border-bottom">
       <div class="text-center mb-3 mt-3">
-        <img src="{{ asset('build/images/'~author.getUserAvatar()) }}" class="rounded-5 shadow-1-strong me-2"
+        <img src="{{ asset('uploads/avatars/users/'~author.getUserAvatar()) }}" class="rounded-5 shadow-1-strong me-2"
           height="35" alt="" loading="lazy" />
         <span> Published <u>{{ post.getAddDate()|date("h:m:s d/m/y")  }}</u> by</span>
         <a href="" class="text-dark">{{ author.getName() }}</a>
@@ -86,10 +86,12 @@
       <p class="text-center"><strong>Leave a comment</strong></p>
       <form>
         <div class="form-outline mb-4">
-          <img class="rounded-circle shadow-1-strong me-3"
-          src="" alt="avatar" width="60"
+            <div class="user_comment_container">
+          <img class="rounded-circle shadow-1-strong me-1 mb-3"
+          src="{{ asset('uploads/avatars/users/'~app.getUser().getUserAvatar()) }}" alt="avatar" width="60"
           height="60" />
-          <h6 class="fw-bold mb-1">Name</h6>
+                <span class="fw-bold mb-1">{{ app.getUser().getName() }}</span>
+            </div>
           <textarea class="form-control" id="form4Example3" rows="4"></textarea>
         </div>
           <!-- Submit button -->
@@ -113,7 +115,7 @@
 
                       <div class="d-flex flex-start">
                         <img class="rounded-circle shadow-1-strong me-3"
-                          src="{{ asset('build/images/'~comment.getUser().getUserAvatar()) }}" alt="avatar" width="60"
+                          src="{{ asset('uploads/avatars/users/'~comment.getUser().getUserAvatar()) }}" alt="avatar" width="60"
                           height="60" />
                         <div>
                           <h6 class="fw-bold mb-1">{{ comment.getUser().getName() }}</h6>
@@ -140,14 +142,5 @@
               </div>
     </div>
     <!-- Footer -->
-    <div class="container">
-            <footer class="d-flex flex-wrap justify-content-center align-items-center py-3 my-4 border-top">
-                <div class="col-md-4 d-flex justify-content-center align-items-center">
-                    <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-                        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-                    </a>
-                    <span class="text-muted">© 2021 Company, Inc</span>
-                </div>
-            </footer>
-    </div>
+    {{ include('footer.html.twig') }}
 {% endblock %}

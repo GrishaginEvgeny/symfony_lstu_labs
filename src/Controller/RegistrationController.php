@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
     {
         $user = new User();
         $categories = [
@@ -43,8 +44,35 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            //$entityManager->persist($user);
-            //$entityManager->flush();
+            $user_avatar = $form->get('user_avatar')->getData();
+            $blog_picture = $form->get('blog_picture')->getData();
+
+            $files = [
+                ['file' => $user_avatar, 'directory' => 'user_avatars', 'setMethod'=> 'setUserAvatar'],
+                ['file' => $blog_picture, 'directory' => 'blog_avatars', 'setMethod'=> 'setBlogPicture'],
+
+            ];
+            foreach($files as $file){
+                if($file['file']){
+                    $originalFilename = pathinfo($file['file']->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$file['file']->guessExtension();
+
+                    try {
+                        $file['file']->move(
+                            $this->getParameter($file['directory']),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+
+                    }
+                    $user->{$file['setMethod']}($newFilename);
+                }
+            }
+
+
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_home');
         }

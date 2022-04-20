@@ -87,6 +87,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         ])]
     private string $user_avatar;
 
+    #[ORM\Column(type:"string", unique:true, nullable:true)]
+    private $apiToken;
+
 
     #[ORM\Column(type: "json")]
     private array $roles = [];
@@ -95,6 +98,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         $this->comments = new ArrayCollection();
         $this->posts = new ArrayCollection();
+    }
+
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
+
+    public function setApiToken(string $apiToken): self
+    {
+        $this->apiToken = $apiToken;
+
+        return $this;
     }
 
     public function getId(): ?int

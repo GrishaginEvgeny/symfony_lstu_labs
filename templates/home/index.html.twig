@@ -21,22 +21,22 @@
         </div>
         <!— body —>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {%  for user in users %}
+            {%  for post in posts %}
                 <div class="col-md-6">
                     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <div class="col p-4 d-flex flex-column position-static">
-                            <strong class="d-inline-block mb-2 text-success">{{ user.getBlogCategory() }}</strong>
-                            <h3 class="mb-0">{{ user.getBlogName()  }}</h3>
-                            <div class="mb-1 text-muted">Nov 11</div>
-                            <p class="mb-auto">{{ user.getBlogCaption() }}</p>
+                            <strong class="d-inline-block mb-2 text-success">{{ post.getUser().getBlogCategory() }}</strong>
+                            <h3 class="mb-0">{{ post.getTitle()  }}</h3>
+                            <small class="text-muted">{{ post.getAddDate()|date("h:m:s d/m/y") }}</small>
+                            <p class="mb-auto">{{ post.getText() }}</p>
                             <div class="d-flex justify-content-between">
-                                <a href="/blog/{{ user.getBlogName() }}">Перейти к блогу</a>
-                                <a href="/user/{{ user.getName() }}">Профиль автора</a>
+                                <a href="/blog/{{ post.getUser().getBlogName() }}">Перейти к блогу</a>
+                                <a href="/post/{{ post.getId() }}">Перейти к посту</a>
                             </div>
                         </div>
                         <div class="col-auto d-none d-lg-block">
-                            <a href="/blog/{{ user.getBlogName() }}">
-                                <img class="bi" width="200" height="250" src="{{ asset('build/images/'~user.getBlogPicture()) }}"/>
+                            <a href="/post/{{ post.getId() }}">
+                                <img class="bi" width="200" height="250" src="{{ asset('uploads/posts/'~post.getPictures()[0]) }}"/>
                             </a>
                         </div>
                     </div>
@@ -44,15 +44,6 @@
             {% endfor %}
         </div>
         <!— Footer —>
-        <div class="container">
-            <div class="d-flex flex-wrap justify-content-center align-items-center py-3 my-4 border-top">
-                <div class="col-md-4 d-flex justify-content-center align-items-center">
-                    <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
-                        <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-                    </a>
-                    <span class="text-muted">© 2021 Company, Inc</span>
-                </div>
-            </div>
-        </div>
+        {{ include('footer.html.twig') }}
     </div>
 {% endblock %}

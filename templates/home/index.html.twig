@@ -30,12 +30,12 @@
                             <div class="mb-1 text-muted">Nov 11</div>
                             <p class="mb-auto">{{ user.getBlogCaption() }}</p>
                             <div class="d-flex justify-content-between">
-                                <a href="/blog/{{ user.getBlogToken() }}">Перейти к блогу</a>
-                                <a href="/user/{{ user.getToken() }}">Профиль автора</a>
+                                <a href="/blog/{{ user.getBlogName() }}">Перейти к блогу</a>
+                                <a href="/user/{{ user.getName() }}">Профиль автора</a>
                             </div>
                         </div>
                         <div class="col-auto d-none d-lg-block">
-                            <a href="/blog/{{ user.getBlogToken() }}">
+                            <a href="/blog/{{ user.getBlogName() }}">
                                 <img class="bi" width="200" height="250" src="{{ asset('build/images/'~user.getBlogPicture()) }}"/>
                             </a>
                         </div>

@@ -11,11 +11,11 @@ use App\Repository\UserRepository;
 
 class BlogController extends AbstractController
 {
-    #[Route('/blog/{token}', name: 'app_blog')]
-    public function index(string $token, UserRepository $userRepository): Response
+    #[Route('/blog/{name}', name: 'app_blog')]
+    public function index(string $name, UserRepository $userRepository): Response
     {
         $blog = $userRepository->findOneBy(
-            ['blog_token' => $token]
+            ['blog_name' => $name]
         );
 
         $posts = $blog->getPosts();

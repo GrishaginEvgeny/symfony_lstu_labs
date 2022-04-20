@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Пользователь с там e-mail уже существует', errorPath: 'email')]
@@ -22,15 +23,40 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(['message'=>'Вы не ввели имя'])]
+    #[Assert\Length(['min' => 2, 'minMessage' => 'Имя слишком короткое','max' => 50,
+    'maxMessage' => 'Имя слишком длинное'])]
+    #[Assert\Regex([
+        'pattern' => '/^(?!_)(?!.*_$)(?!.*__)[a-zA-Z0-9_]+$/',
+        'match' => true,
+        'message' => 'Имя может содержать только латиницу цифры и нижнее подчёркивание.
+        Также имя не может начиться и заканчиваться нижним подчёркиванием, и содержать два 
+        нижних подчёркивания подряд.',
+        ])]
     private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Email(['message' => 'Вы ввели некорректный e-mail'])]
+    #[Assert\NotBlank(['message'=>'Вы не ввели почту'])]
     private string $email;
 
+
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(['message'=>'Вы не ввели пароль'])]
+    #[Assert\Length(['min' => 5, 'minMessage' => 'Пароль слишком короткий','max' => 4000])]
     private string $password;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(['min' => 5, 'minMessage' => 'Имя слишком короткое', 'max' => 50,
+    'maxMessage' => 'Имя слишком длинное'])]
+    #[Assert\NotBlank(['message'=>'Вы не ввели имя'])]
+    #[Assert\Regex([
+        'pattern' => '/^(?!_)(?!.*_$)(?!.*__)[a-zA-Z0-9_]/',
+        'match' => true,
+        'message' => 'Имя может содержать только латиницу цифры и нижнее подчёркивание.
+        Также имя не может начиться и заканчиваться нижним подчёркиванием, и содержать два 
+        нижних подчёркивания подряд.',
+    ])]
     private string $blog_name;
 
     #[ORM\OneToMany(mappedBy: 'relation', targetEntity: Comment::class)]
@@ -40,15 +66,25 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private $posts;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(['min' => 10, 'minMessage' => 'Описание слишком короткое.'])]
+    #[Assert\NotBlank(['message'=>'Вы не ввели имя'])]
     private string $blog_caption;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $blog_category;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Image([
+        'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
+        'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
+        ])]
     private string $blog_picture;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Image([
+        'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
+        'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
+        ])]
     private string $user_avatar;
 
 

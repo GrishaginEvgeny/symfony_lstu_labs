@@ -8,12 +8,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/user/{token}', name: 'app_user')]
-    public function index(string $token): Response
+    #[Route('/user/{name}', name: 'app_user')]
+    public function index(string $name): Response
     {
         return $this->render('user/index.html.twig', [
             'controller_name' => 'UserController',
-            'token' => $token
+            'token' => $name
         ]);
     }
 }

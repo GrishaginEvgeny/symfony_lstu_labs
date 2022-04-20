@@ -30,77 +30,40 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('name', TextType::class ,[
                 'label' => 'Имя пользователя',
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['min' => 1, 'minMessage' => 'Имя слишком короткое','max' => 50,
-                        'maxMessage' => 'Имя слишком длинное']),
-                    new Regex([
-                        'pattern' => '/^(?!_)(?!.*_$)(?!.*__)[a-zA-Z0-9_]+$/',
-                        'match' => true,
-                        'message' => 'Имя может содержать только латиницу цифры и нижнее подчёркивание.
-                        Также имя не может начиться и заканчиваться нижним подчёркиванием, и содержать два 
-                        нижних подчёркивания подряд.',
-                        ])
-                ],
                 'help' => 'Имя должно быть более 3х симовлов'
             ])
             ->add('email', EmailType::class, [
                 'label' => 'E-mail пользователя',
-                'required' => true,
                 'help' => "Почта должна быть формата \"имя\"@\"домен\"",
-                'constraints' => [
-                    new NotBlank(),
-                    new Email(['message' => 'Вы ввели некорректный e-mail']),
-                ]
-            ] )
+            ])
             ->add('password', PasswordType::class, [
                 'label' => 'Пароль',
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['min' => 3, 'max' => 4000]),
-                ],])
+                'help' => "Пароль должен состоять из 5 символов или более.",
+            ])
             ->add('user_avatar', FileType::class, [
                 'label' => 'Фото пользователя',
-                'constraints' => new Image([
-                    'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
-                    'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
-                    ])
-                ])
+                'help' => "Расширении должно быть jpg, png или bmp.",
+            ])
             ->add('blog_name',TextType::class, [
                 'label' => 'Название блога',
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['min' => 5, 'minMessage' => 'Имя слишком короткое', 'max' => 50,
-                        'maxMessage' => 'Имя слишком длинное']),
-                    new Regex([
-                        'pattern' => '/^(?!_)(?!.*_$)(?!.*__)[a-zA-Z0-9_]/',
-                        'match' => true,
-                        'message' => 'Имя может содержать только латиницу цифры и нижнее подчёркивание.
-                        Также имя не может начиться и заканчиваться нижним подчёркиванием, и содержать два 
-                        нижних подчёркивания подряд.',
-                    ])
-                ]])
+                'help' => 'Имя должно быть более 3х симовлов'
+            ])
             ->add('blog_caption',TextareaType::class, [
                 'label' => 'Описание блога',
-                'constraints' => [
-                    new NotBlank(),
-                    new Length(['min' => 10, 'minMessage' => 'Описание слишком короткое.']),
-                ]])
+                'help' => 'Описание должно занимать 10 символов или более.',
+            ])
             ->add('blog_category', ChoiceType::class, [
                 'label' => 'Категория блока',
                 'choices' => $options['categories']
-                 ])
+            ])
             ->add('blog_picture',FileType::class, [
-                'label' => 'Фото блога','constraints' => new Image([
-                    'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
-                    'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
-                ])])
+                'label' => 'Фото блога',
+                'help' => "Расширении должно быть jpg, png или bmp.",
+            ])
             ->add('agree_checkbox', CheckboxType::class, [
                 'label' => "<a href=\"#\">Принимаю условия пользовательского соглашения</a>",
                 'label_html' => true,
                 'mapped' => false,
-                'required' => false,
                 'constraints' => [new IsTrue(['message'=>'Для регистрации вы должны принять условия пользовательского
                  соглашения'])]
             ])
@@ -111,7 +74,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'categories' => '',
+            'categories' => [],
         ]);
 
         $resolver->setAllowedTypes('categories','array');

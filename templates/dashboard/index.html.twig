@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <div class="text-center mb-2">
+                    <h3>Вы находитесь в административной панели!</h3>
+                    <h6>Выберите сущность, которую вы хотите проверить:</h6>
+                </div>
+                <div class="button-container text-center">
+                    <a href="{{ postUrl }}" style="width: 150px;" class="btn btn-secondary my-2">Посты</a>
+                    <a href="{{ commentUrl }}" style="width: 150px;"  class="btn btn-secondary my-2">Комментарии</a>
+                </div>
+                <div class="text-center">
+                    <a href="/" style="width: 150px;"  class="btn btn-secondary">На главную</a>
+                </div>
+            </div>
+        </div>
+{% endblock %}

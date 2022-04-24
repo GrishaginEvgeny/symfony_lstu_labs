@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block body %}
+    <h1>Post</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ post.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ post.title }}</td>
+            </tr>
+            <tr>
+                <th>AddDate</th>
+                <td>{{ post.addDate ? post.addDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Text</th>
+                <td>{{ post.text }}</td>
+            </tr>
+            <tr>
+                <th>ViewCount</th>
+                <td>{{ post.viewCount }}</td>
+            </tr>
+            <tr>
+                <th>Pictures</th>
+                <td>{{ post.pictures ? post.pictures|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsModerated</th>
+                <td>{{ post.isModerated ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_post_c_r_u_d_index') }}">back to list</a>
+
+    <a href="{{ path('app_post_c_r_u_d_edit', {'id': post.id}) }}">edit</a>
+
+    {{ include('post_crud/_delete_form.html.twig') }}
+{% endblock %}

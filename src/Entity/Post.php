@@ -33,13 +33,22 @@ class Post
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
     private $comments;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isModerated = false;
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
+    private $authorName;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+    }
+
+    public function getAuthorName(): ?string{
+        return $this->user->getName();
     }
 
 
@@ -80,6 +89,18 @@ class Post
     public function setText(string $description): self
     {
         $this->text = $description;
+
+        return $this;
+    }
+
+    public function getIsModerated(): ?bool
+    {
+        return $this->isModerated;
+    }
+
+    public function setIsModerated(bool $isModerated): self
+    {
+        $this->isModerated = $isModerated;
 
         return $this;
     }

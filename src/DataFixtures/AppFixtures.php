@@ -46,7 +46,7 @@ class AppFixtures extends Fixture
             $user->setBlogCategory($categories[rand(0,11)]);
             $user->setBlogPicture('b-'.(($i+1)%2).'.png');
             $user->setUserAvatar('u-'.(($i+1)%2).'.jpg');
-            $user->setRoles([]);
+            $user->setRoles(['ROLE_USER']);
             $manager->persist($user);
 
             $date = new \DateTime('@'.strtotime('now'));
@@ -68,6 +68,19 @@ class AppFixtures extends Fixture
             $comment->setPost($post);
             $manager->persist($comment);
         }
+
+        $user = new User();
+        $user->setName('BobAdmin');
+        $user->setEmail('test@admin'.'.for');
+        $password = $this->hasher->hashPassword($user, 'test');
+        $user->setPassword($password);
+        $user->setBlogName('test_blog_admin');
+        $user->setBlogCaption('test_blog_admin-caption');
+        $user->setBlogCategory($categories[rand(0,11)]);
+        $user->setBlogPicture('b-'.(($i+1)%2).'.png');
+        $user->setUserAvatar('u-'.(($i+1)%2).'.jpg');
+        $user->setRoles(['ROLE_ADMIN']);
+        $manager->persist($user);
 
         $manager->flush();
     }

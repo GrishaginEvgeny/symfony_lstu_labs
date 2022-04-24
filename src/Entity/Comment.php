@@ -22,7 +22,7 @@ class Comment
     private $text;
 
     #[ORM\Column(type: 'boolean')]
-    private $isModerated;
+    private $isModerated = false;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $picture;
@@ -39,6 +39,8 @@ class Comment
     #[ORM\OneToMany(mappedBy: 'reply', targetEntity: self::class)]
     private $replies;
 
+    private $authorName;
+
     public function __construct()
     {
         $this->replies = new ArrayCollection();
@@ -48,6 +50,11 @@ class Comment
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->getId();
     }
 
     public function getAddDate(): ?\DateTimeInterface
@@ -108,6 +115,10 @@ class Comment
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getAuthorName(): ?string{
+        return $this->user->getName();
     }
 
     public function getPost(): ?Post

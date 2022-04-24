@@ -10,6 +10,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Comment;
+use App\Entity\Post;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'Пользователь с там e-mail уже существует', errorPath: 'email')]
@@ -59,7 +61,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     ])]
     private string $blog_name;
 
-    #[ORM\OneToMany(mappedBy: 'relation', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
     private $comments;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class, orphanRemoval: true)]
@@ -98,6 +100,11 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         $this->comments = new ArrayCollection();
         $this->posts = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getName();
     }
 
     public function getApiToken(): ?string
@@ -202,7 +209,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         if (!$this->comments->contains($comment)) {
             $this->comments[] = $comment;
-            $comment->setRelation($this);
+            $comment->setUser($this);
         }
 
         return $this;
@@ -212,8 +219,8 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getRelation() === $this) {
-                $comment->setRelation(null);
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
             }
         }
 

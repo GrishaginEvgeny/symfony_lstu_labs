@@ -16,18 +16,25 @@ class Post
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(['min' => 5, 'minMessage' => 'Заголовок слишком короткий', 'max' => 50,
+    'maxMessage' => 'Заголовок слишком длинный'])]
     private $title;
 
     #[ORM\Column(type: 'datetime')]
     private $addDate;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Assert\Length(['min' => 10, 'minMessage' => 'Описание слишком короткое.'])]
     private $text;
 
     #[ORM\Column(type: 'integer')]
-    private $viewCount;
+    private $viewCount = 0;
 
     #[ORM\Column(type: 'array', nullable: true)]
+    #[Assert\Image([
+        'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
+        'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
+        ])]
     private $pictures = [];
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
@@ -41,6 +48,13 @@ class Post
     private $user;
 
     private $authorName;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Image([
+        'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
+        'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
+        ])]
+    private $avatar;
 
     public function __construct()
     {
@@ -167,6 +181,18 @@ class Post
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

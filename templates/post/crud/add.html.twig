@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Добавить блог{% endblock %}
+
+{% block body %}
+    {{ include('header.html.twig') }}
+
+    <!-- Order -->
+    <div class="container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="display-5 fw-bold text-center">
+                    Добавление поста
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main layout -->
+    <div class="container">
+        <div class="col-8 mx-auto">
+            {{ form_start(postAdd) }}
+            {{ form_widget(postAdd) }}
+
+            <div class="button_container text-center">
+                <button type="submit" class="btn btn-primary ">Добавить</button>
+            </div>
+            {{ form_end(postAdd)}}
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {{ include('footer.html.twig') }}
+{% endblock %}

@@ -56,7 +56,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Категория блока',
                 'choices' => $options['categories']
             ])
-            ->add('blog_picture',FileType::class, [
+            ->add('blog_picture', FileType::class, [
                 'label' => 'Фото блога',
                 'help' => "Расширении должно быть jpg, png или bmp.",
             ])

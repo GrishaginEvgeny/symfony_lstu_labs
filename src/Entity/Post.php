@@ -6,6 +6,7 @@ use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -30,12 +31,19 @@ class Post
     #[ORM\Column(type: 'integer')]
     private $viewCount = 0;
 
+    #[Assert\All([
+        new Assert\NotBlank(['message'=>'Вы ничего не загрузили']),
+        new Assert\Image([
+            'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
+            'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
+        ]),
+        new Assert\File([
+            'maxSize' => '8Mi',
+            'maxSizeMessage' => 'Файл {{ name }} слишком большой. Максимально допустимый размер файла {{ limit }} {{ suffix }}'
+        ])
+    ])]
     #[ORM\Column(type: 'array', nullable: true)]
-    #[Assert\Image([
-        'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
-        'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
-        ])]
-    private $pictures = [];
+    private array $pictures = [];
 
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
     private $comments;
@@ -54,6 +62,9 @@ class Post
         'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
         'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
         ])]
+    #[Assert\File([
+        'maxSize' => '8Mi',
+        'maxSizeMessage' => 'Файл {{ name }} слишком большой. Максимально допустимый размер файла {{ limit }} {{ suffix }}'])]
     private $avatar;
 
     public function __construct()

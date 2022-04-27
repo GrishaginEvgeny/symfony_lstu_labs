@@ -72,9 +72,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[Assert\NotBlank(['message'=>'Вы не ввели имя'])]
     private string $blog_caption;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $blog_category;
-
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Image([
         'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
@@ -95,6 +92,10 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Column(type: "json")]
     private array $roles = [];
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'blog')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $category;
 
     public function __construct()
     {
@@ -269,18 +270,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this;
     }
 
-    public function getBlogCategory(): ?string
-    {
-        return $this->blog_category;
-    }
-
-    public function setBlogCategory(string $blog_category): self
-    {
-        $this->blog_category = $blog_category;
-
-        return $this;
-    }
-
     public function getBlogPicture(): ?string
     {
         return $this->blog_picture;
@@ -301,6 +290,18 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function setUserAvatar(?string $user_avatar): self
     {
         $this->user_avatar = $user_avatar;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

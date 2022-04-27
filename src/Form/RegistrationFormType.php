@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\User;
+use App\Repository\CategoryRepository;
+use Doctrine\ORM\Mapping\Entity;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -52,7 +55,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Описание блога',
                 'help' => 'Описание должно занимать 10 символов или более.',
             ])
-            ->add('blog_category', ChoiceType::class, [
+            ->add('category', ChoiceType::class, [
                 'label' => 'Категория блока',
                 'choices' => $options['categories']
             ])
@@ -74,7 +77,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'categories' => [],
+            'categories' => Category::class,
         ]);
 
         $resolver->setAllowedTypes('categories','array');

@@ -81,6 +81,7 @@
       </div>
     </div>
 
+    {% if app.getUser() %}
     <div class="container">
         <!-- TODO -->
       <p class="text-center"><strong>Leave a comment</strong></p>
@@ -92,23 +93,25 @@
           height="60" />
                 <span class="fw-bold mb-1">{{ app.getUser().getName() }}</span>
             </div>
-          <textarea class="form-control" id="form4Example3" rows="4"></textarea>
+            {{ form_start(commentForm) }}
+            {{ form_widget(commentForm) }}
+            <button type="submit" class="btn btn-primary btn-block mb-4">
+                Отправить комментарий
+            </button>
+            {{ form_end(commentForm)}}
         </div>
           <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4">
-          Отправить комментарий
-        </button>
       </form>
     </div>
+    {% endif %}
 
     <!-- Comments -->
-    <div style="background-color: #ffffff;" class="container">
+    <div style="background-color: #ffffff;" class="container mt-3">
               <div class="row d-flex justify-content-center">
                 <div class="col-md-12 col-lg-10">
                   <div class="card text-dark">
                     <div class="ms-3 mt-3">
-                      <h4 class="mb-0">Recent comments</h4>
-                      <p class="fw-light mb-2">Latest Comments section by users</p>
+                      <h4 class="mb-0">Комментарии</h4>
                     </div>
                   {% for comment in comments %}
                     <div class="card-body p-4">
@@ -118,15 +121,11 @@
                           src="{{ asset('uploads/avatars/users/'~comment.getUser().getUserAvatar()) }}" alt="avatar" width="60"
                           height="60" />
                         <div>
-                          <h6 class="fw-bold mb-1">{{ comment.getUser().getName() }}</h6>
+                          <h6 class="fw-bold mb-1">{{ comment.getUser().getName() }} {% if comment.getReply() %} в ответ на <a href="#">комментарий</a> comment.getReply().getUser().getName() {% endif %}</h6>
                           <div class="d-flex align-items-center mb-3">
                             <p class="mb-0">
-                              March 07, 2021
-                              <span class="badge bg-primary">Pending</span>
+                                {{ comment.getAddDate()|date("h:m:s d/m/y") }} {% if app.getUser() != comment.getUser() %} <a href="#">Ответить</a> {% endif %}
                             </p>
-                            <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
-                            <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
-                            <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
                           </div>
                           <p class="mb-0">
                             {{ comment.getText() }}

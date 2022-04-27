@@ -6,6 +6,8 @@
 parameters:
     user_avatars: '%kernel.project_dir%/public/uploads/avatars/users'
     blog_avatars: '%kernel.project_dir%/public/uploads/avatars/blogs'
+    post_pictures: '%kernel.project_dir%/public/uploads/posts'
+    comment_pictures: '%kernel.project_dir%/public/uploads/comments'
 services:
     # default configuration for services in *this* file
     _defaults:

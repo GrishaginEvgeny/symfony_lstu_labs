@@ -94,15 +94,15 @@
             </div>
             <!-- Blog_category -->
             <div class="form-group mb-2">
-                {{ form_label(registrationForm.blog_category) }}
+                {{ form_label(registrationForm.category) }}
                 <div class="text-danger m-0">
-                    {{ form_errors(registrationForm.blog_category) }}
+                    {{ form_errors(registrationForm.category) }}
                 </div>
-                {{ form_widget(registrationForm.blog_category, {'attr':{
+                {{ form_widget(registrationForm.category, {'attr':{
                     'class': 'form-control',
                     'aria-describedby': 'blogcatHelp',
                 }}) }}
-                <small id="blogcatHelp" class="form-text text-muted mb-0">{{ form_help(registrationForm.blog_category) }}</small>
+                <small id="blogcatHelp" class="form-text text-muted mb-0">{{ form_help(registrationForm.category) }}</small>
             </div>
             <!-- Blog_picture -->
             <div class="form-group mb-2">

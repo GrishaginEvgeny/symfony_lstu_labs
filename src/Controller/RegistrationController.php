@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,26 +18,18 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,SluggerInterface $slugger): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,SluggerInterface $slugger, CategoryRepository $categoryRepository): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
         }
         $user = new User();
-        $categories = [
-            'В мире' => 'В мире',
-            'Россия' => 'Россия',
-            'Технологии' => 'Технологии',
-            'Дизайн' => 'Дизайн',
-            'Культура' => 'Культура',
-            'Бизнес'=> 'Бизнес',
-            'Политика' => 'Политика',
-            'IT'=> 'IT',
-            'Наука'=> 'Наука',
-            'Здоровье'=> 'Здоровье',
-            'Спорт' => 'Спорт',
-            'Путешествия' => 'Путешествия'];
-        $form = $this->createForm(RegistrationFormType::class, $user, ['categories' => $categories]);
+        $allCategories = $categoryRepository->findAll();
+        $result = [];
+        foreach($allCategories as $category){
+            $result[$category->getName()] = $category;
+        }
+        $form = $this->createForm(RegistrationFormType::class, $user, ['categories' => $result]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

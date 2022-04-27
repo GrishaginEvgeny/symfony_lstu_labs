@@ -31,19 +31,17 @@
                       <div class="carousel-indicators">
                           {% for pic in post.getPictures() %}
                               <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ loop.index }}"
-                                      {% if loop.index == 0 %} class="active" {% endif %}
-                                      aria-label="Slide {{ loop.index }}" {% if loop.index == 0 %} aria-current="true"{% endif %}></button>
-                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
-                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
+                                      {% if loop.index == 1 %} class="active" {% endif %}
+                                      aria-label="Slide {{ loop.index }}" {% if loop.index == 1 %} aria-current="true"{% endif %}></button>
                           {% endfor %}
                       </div>
                       <!-- Картинки -->
                       <div class="carousel-inner">
                           {% for pic in post.getPictures() %}
-                              <div class="carousel-item {% if loop.index == 0 %} active {% endif %}">
+                              <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
                                   <div class="container d-flex justify-content-center">
                                       <img class="text-center shadow-1-strong me-3"
-                                           src="src={{ asset('uploads/posts/'~pic) }}" alt="avatar" width="500"
+                                           src="{{ asset('uploads/posts/'~pic) }}" alt="avatar" width="500"
                                            height="500" />
                                   </div>
                               </div>

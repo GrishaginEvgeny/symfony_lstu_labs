@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +14,7 @@ class HomeController extends AbstractController
     public function index(PostRepository $postRepository): Response
     {
         //$posts = $postRepository->findOneBy(null,['addDate' => 'DESC']);
-        $posts = $postRepository->findAll();
+        $posts = $postRepository->findBy(['isModerated' => true], ['addDate' => 'DESC']);
         $params = [
             "menu" => ['Главная','О нас'],
             "posts" => $posts,

@@ -36,7 +36,7 @@ class PostController extends AbstractController
             $new_coment->setIsModerated(false);
             $new_coment->setPost($post);
             $new_coment->setText($form->get('text')->getData());
-            $reply_id = $form->get('reply')->getData();
+            $reply_id = $form->get('reply_id')->getData();
             $reply = $commentRepository->findOneBy(['id'=>$reply_id]);
             $new_coment->setReply($reply);
 

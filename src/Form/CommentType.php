@@ -17,7 +17,7 @@ class CommentType extends AbstractType
             ->add('text', TextareaType::class, [
                 'label' => false,
             ])
-            ->add('reply', HiddenType::class, [
+            ->add('reply_id', HiddenType::class, [
                 'attr' => ['class' => 'hidden-reply-id']
             ])
         ;

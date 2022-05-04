@@ -37,6 +37,16 @@ class Comment
     #[ORM\OneToMany(mappedBy: 'reply', targetEntity: self::class)]
     private $replies;
 
+    private string $reply_id;
+
+    public function getReplyId(){
+        return $this->reply_id;
+    }
+
+    public function setReplyId(?string $reply_id){
+            $this->reply_id = $reply_id;
+    }
+
     public function __construct()
     {
         $this->replies = new ArrayCollection();

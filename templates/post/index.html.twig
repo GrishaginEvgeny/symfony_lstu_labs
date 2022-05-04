@@ -1,8 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PostController!{% endblock %}
-
+{% block title %}{{ post.getTitle() }}{% endblock %}
 {% block body %}
+<style>
+    .reply-link
+    {
+        color: var(--bs-info);
+        text-decoration: underline;
+    }
+    .reply-link:hover
+    {
+        cursor: pointer;
+        color: var(--bs-primary);
+        text-decoration: underline;
+    }
+    .Xmark:hover
+    {
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
     {% block header %}{% endblock %}
 {{ include('header.html.twig') }}
 <!-- Order -->
@@ -30,15 +47,15 @@
                       <!-- Нижние кнопки -->
                       <div class="carousel-indicators">
                           {% for pic in post.getPictures() %}
-                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ loop.index }}"
-                                      {% if loop.index == 1 %} class="active" {% endif %}
-                                      aria-label="Slide {{ loop.index }}" {% if loop.index == 1 %} aria-current="true"{% endif %}></button>
+                              <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ loop.index - 1 }}"
+                                      {% if loop.first == true %} class="active" {% endif %}
+                                      aria-label="Slide {{ loop.index-1 }}"></button>
                           {% endfor %}
                       </div>
                       <!-- Картинки -->
                       <div class="carousel-inner">
                           {% for pic in post.getPictures() %}
-                              <div class="carousel-item {% if loop.index == 1 %} active {% endif %}">
+                              <div class="carousel-item {% if loop.first == true %} active{% endif %}">
                                   <div class="container d-flex justify-content-center">
                                       <img class="text-center shadow-1-strong me-3"
                                            src="{{ asset('uploads/posts/'~pic) }}" alt="avatar" width="500"
@@ -83,14 +100,14 @@
     <div class="container">
         <!-- TODO -->
       <p class="text-center"><strong>Leave a comment</strong></p>
-      <form>
         <div class="form-outline mb-4">
             <div class="user_comment_container">
-          <img class="rounded-circle shadow-1-strong me-1 mb-3"
+          <img class="rounded-circle shadow-1-strong me-1 mb-1"
           src="{{ asset('uploads/avatars/users/'~app.getUser().getUserAvatar()) }}" alt="avatar" width="60"
           height="60" />
                 <span class="fw-bold mb-1">{{ app.getUser().getName() }}</span>
             </div>
+            <div class="text mb-1 d-flex" id="text-of-reply"></div>
             {{ form_start(commentForm) }}
             {{ form_widget(commentForm) }}
             <button type="submit" class="btn btn-primary btn-block mb-4">
@@ -99,7 +116,6 @@
             {{ form_end(commentForm)}}
         </div>
           <!-- Submit button -->
-      </form>
     </div>
     {% endif %}
 
@@ -112,17 +128,17 @@
                       <h4 class="mb-0">Комментарии</h4>
                     </div>
                   {% for comment in comments %}
-                    <div class="card-body p-4">
+                    <div class="card-body p-4" id="{{ comment.getId() }}">
 
                       <div class="d-flex flex-start">
                         <img class="rounded-circle shadow-1-strong me-3"
                           src="{{ asset('uploads/avatars/users/'~comment.getUser().getUserAvatar()) }}" alt="avatar" width="60"
                           height="60" />
                         <div>
-                          <h6 class="fw-bold mb-1">{{ comment.getUser().getName() }} {% if comment.getReply() %} в ответ на <a href="#">комментарий</a> comment.getReply().getUser().getName() {% endif %}</h6>
+                          <h6 class="fw-bold mb-1">{{ comment.getUser().getName() }} {% if comment.getReply() %} в ответ на <a href="#{{ comment.getReply() }}">комментарий</a> comment.getReply().getUser().getName() {% endif %}</h6>
                           <div class="d-flex align-items-center mb-3">
                             <p class="mb-0">
-                                {{ comment.getAddDate()|date("h:m:s d/m/y") }} {% if app.getUser() != comment.getUser() %} <a href="#">Ответить</a> {% endif %}
+                                {{ comment.getAddDate()|date("h:m:s d/m/y") }} {% if app.getUser() != comment.getUser() %} <a class="reply-link" data-id="{{ comment.getId() }}" id="to{{ comment.getId() }}">Ответить</a> {% endif %}
                             </p>
                           </div>
                           <p class="mb-0">
@@ -140,4 +156,19 @@
     </div>
     <!-- Footer -->
     {{ include('footer.html.twig') }}
+    <script>
+        let replyLinks = document.querySelectorAll('.reply-link');
+        let replyHiddenField = document.querySelector('.hidden-reply-id');
+        let textOfReply = document.getElementById('text-of-reply');
+        for(let i=0; i<replyLinks.length; i++){
+            replyLinks[i].addEventListener('click',function () {
+                replyHiddenField.value = replyLinks[i].getAttribute("data-id");
+                textOfReply.innerHTML = `<div>Ответ на <a href="#${replyLinks[i].getAttribute("data-id")}">комментарий</a></div>    <div class="mx-1 Xmark" id="Xmark">X</div>`;
+                document.getElementById('Xmark').addEventListener('click', function (){
+                    replyHiddenField.value = null;
+                    textOfReply.innerHTML = "";
+                })
+            })
+        }
+    </script>
 {% endblock %}

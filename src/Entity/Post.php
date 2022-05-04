@@ -72,11 +72,6 @@ class Post
         $this->comments = new ArrayCollection();
     }
 
-    public function getAuthorName(): ?string{
-        return $this->user->getName();
-    }
-
-
     public function getId(): ?int
     {
         return $this->id;

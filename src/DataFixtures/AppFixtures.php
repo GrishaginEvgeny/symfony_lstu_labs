@@ -74,6 +74,7 @@ class AppFixtures extends Fixture
             $post->setViewCount(1);
             $post->setUser($user);
             $pic_path = 'p-'.(($i+1)%2).'.png';
+            $post->setIsModerated(true);
             $post->setPictures([$pic_path,$pic_path,$pic_path]);
             $post->setAvatar($pic_path);
             $manager->persist($post);
@@ -82,7 +83,6 @@ class AppFixtures extends Fixture
             $comment->setAddDate($date);
             $comment->setText('Test Text'.$i);    
             $comment->setIsModerated(true);
-            $comment->setPicture('c-'.(($i+1)%2).'.jpg');
             $comment->setUser($user);
             $comment->setPost($post);
             $manager->persist($comment);

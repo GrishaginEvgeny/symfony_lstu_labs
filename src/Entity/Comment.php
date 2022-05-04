@@ -19,13 +19,11 @@ class Comment
     private $addDate;
 
     #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(['message'=>'Вы не можете оставить пустой комментарий'])]
     private $text;
 
     #[ORM\Column(type: 'boolean')]
     private $isModerated = false;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $picture;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
     private $user;
@@ -38,8 +36,6 @@ class Comment
 
     #[ORM\OneToMany(mappedBy: 'reply', targetEntity: self::class)]
     private $replies;
-
-    private $authorName;
 
     public function __construct()
     {
@@ -93,18 +89,6 @@ class Comment
         return $this;
     }
 
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(?string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -115,10 +99,6 @@ class Comment
         $this->user = $user;
 
         return $this;
-    }
-
-    public function getAuthorName(): ?string{
-        return $this->user->getName();
     }
 
     public function getPost(): ?Post

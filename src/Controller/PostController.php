@@ -4,13 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Form\CommentType;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
+use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Form\PostType;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -18,32 +21,35 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/post')]
 class PostController extends AbstractController
 {
-    #[Route('/{id}', name: 'app_post', methods: ['GET'])]
-    public function index(string $id, PostRepository $postRepository,Request $request): Response
+    #[Route('/{id}', name: 'app_post', methods: ['GET', 'POST'])]
+    public function index(string $id, PostRepository $postRepository,EntityManagerInterface $entityManager, CommentRepository $commentRepository ,Request $request): Response
     {
         $post = $postRepository->findOneBy(['id' => $id]);
         $author = $post->getUser();
-        $comments = $post->getComments();
-        $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
+        $comments = $commentRepository->findBy(['isModerated' => true, 'id' => $id], ['addDate' => 'DESC']);
+        $form = $this->createForm(CommentType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $new_coment = new Comment();
+            $new_coment->setUser($this->getUser());
+            $new_coment->setAddDate(new \DateTime('now'));
+            $new_coment->setIsModerated(false);
+            $new_coment->setPost($post);
+            $new_coment->setText($form->get('text')->getData());
+            $reply_id = $form->get('reply')->getData();
+            $reply = $commentRepository->findOneBy(['id'=>$reply_id]);
+            $new_coment->setReply($reply);
 
-
-            return $this->render('post/index.html.twig', [
-                'controller_name' => 'PostController',
-                'post' => $post,
-                'author' => $author,
-                'comments' => $comments,
-                'commentForm' => $form->createView()
-            ]);
+            $entityManager->persist($new_coment);
+            $entityManager->flush();
+            return $this->redirect('/');
         }
         return $this->render('post/index.html.twig', [
             'controller_name' => 'PostController',
             'post' => $post,
             'author' => $author,
             'comments' => $comments,
-            'commentForm' => $form->createView()
+            'commentForm' => $form->createView(),
         ]);
     }
 

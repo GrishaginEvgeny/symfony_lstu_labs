@@ -99,7 +99,7 @@
     {% if app.getUser() %}
     <div class="container">
         <!-- TODO -->
-      <p class="text-center"><strong>Leave a comment</strong></p>
+      <p class="text-center"><strong>Оставьте коментарий</strong></p>
         <div class="form-outline mb-4">
             <div class="user_comment_container">
           <img class="rounded-circle shadow-1-strong me-1 mb-1"
@@ -135,10 +135,10 @@
                           src="{{ asset('uploads/avatars/users/'~comment.getUser().getUserAvatar()) }}" alt="avatar" width="60"
                           height="60" />
                         <div>
-                          <h6 class="fw-bold mb-1">{{ comment.getUser().getName() }} {% if comment.getReply() %} в ответ на <a href="#{{ comment.getReply() }}">комментарий</a> comment.getReply().getUser().getName() {% endif %}</h6>
+                          <h6 class="fw-bold mb-1">{{ comment.getUser().getName() }} <div class="fw-lighter">{% if comment.getReply() %} в ответ на <a href="#{{ comment.getReply() }}">комментарий</a> {{ comment.getReply().getUser().getName() }} </div> {% endif %}</h6>
                           <div class="d-flex align-items-center mb-3">
                             <p class="mb-0">
-                                {{ comment.getAddDate()|date("h:m:s d/m/y") }} {% if app.getUser() != comment.getUser() %} <a class="reply-link" data-id="{{ comment.getId() }}" id="to{{ comment.getId() }}">Ответить</a> {% endif %}
+                                {{ comment.getAddDate()|date("h:m:s d/m/y") }} {% if app.getUser() != comment.getUser() and app.getUser() %} <a class="reply-link" data-id="{{ comment.getId() }}" id="to{{ comment.getId() }}">Ответить</a> {% endif %}
                             </p>
                           </div>
                           <p class="mb-0">
@@ -156,6 +156,8 @@
     </div>
     <!-- Footer -->
     {{ include('footer.html.twig') }}
+
+    {% if app.getUser() %}
     <script>
         let replyLinks = document.querySelectorAll('.reply-link');
         let replyHiddenField = document.querySelector('.hidden-reply-id');
@@ -171,4 +173,5 @@
             })
         }
     </script>
+    {% endif %}
 {% endblock %}

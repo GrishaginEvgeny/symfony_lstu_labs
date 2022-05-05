@@ -12,6 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\User;
 use App\Entity\Post;
 use App\Entity\Comment;
+use Symfony\Component\Uid\Uuid;
 
 
 class AppFixtures extends Fixture
@@ -60,6 +61,7 @@ class AppFixtures extends Fixture
             $user->setBlogCaption('test_blog_name'.$i.'-caption');
             $user->setBlogPicture('b-'.(($i+1)%2).'.png');
             $user->setUserAvatar('u-'.(($i+1)%2).'.jpg');
+            $user->setApiToken(Uuid::v1()->toRfc4122());
             $user->setRoles(['ROLE_USER']);
             $rand_category = $categories_list[rand(0,(count($categories_list)-1))];
             $user->setCategory($rand_category);
@@ -103,6 +105,7 @@ class AppFixtures extends Fixture
         $user->setBlogPicture('b-'.(($i+1)%2).'.png');
         $user->setUserAvatar('u-'.(($i+1)%2).'.jpg');
         $user->setRoles(['ROLE_ADMIN']);
+        $user->setApiToken(Uuid::v1()->toRfc4122());
         $rand_category = $categories_list[rand(0,count($categories_list)-1)];
         $user->setCategory($rand_category);
         $rand_category->addBlog($user);

@@ -2,12 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
+#[ApiResource(
+    collectionOperations: ["get"],
+    normalizationContext: ['groups' => ['comment']],
+    itemOperations: ['get'],
+)]
 class Comment
 {
     #[ORM\Id]
@@ -16,25 +23,31 @@ class Comment
     private $id;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups("comment")]
     private $addDate;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(['message'=>'Вы не можете оставить пустой комментарий'])]
+    #[Groups("comment")]
     private $text;
 
     #[ORM\Column(type: 'boolean')]
     private $isModerated = false;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'comments')]
+    #[Groups("comment")]
     private $user;
 
     #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: 'comments')]
+    #[Groups("comment")]
     private $post;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'replies')]
+    #[Groups("comment")]
     private $reply;
 
     #[ORM\OneToMany(mappedBy: 'reply', targetEntity: self::class)]
+    #[Groups("comment")]
     private $replies;
 
     private string $reply_id;

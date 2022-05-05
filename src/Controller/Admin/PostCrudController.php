@@ -37,6 +37,9 @@ class PostCrudController extends AbstractCrudController
             TextareaField::new('text')->setLabel('Текст поста'),
             BooleanField::new('isModerated')->setLabel('Одобрено модерацией?'),
             TextField::new('user.name')->setLabel('Автор')->setDisabled(true),
+            ImageField::new('avatar')->setUploadDir('\public\uploads\posts')
+                ->setBasePath('\public\uploads\posts')
+                ->setLabel('Автар')
         ];
     }
 

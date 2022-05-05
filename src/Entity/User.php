@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Comment;
 use App\Entity\Post;
@@ -17,6 +19,11 @@ use App\Entity\Post;
 #[UniqueEntity(fields: ['email'], message: 'Пользователь с там e-mail уже существует', errorPath: 'email')]
 #[UniqueEntity(fields: ['name'], message: 'Пользователь с там именем уже существует', errorPath: 'name')]
 #[UniqueEntity(fields: ['blog_name'], message: 'Пользователь с таким именем блога уже сущестувет', errorPath: 'blog_name')]
+#[ApiResource(
+    collectionOperations: ["get"],
+    normalizationContext: ['groups' => ['user']],
+    itemOperations: ['get'],
+)]
 class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
@@ -35,11 +42,13 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         Также имя не может начиться и заканчиваться нижним подчёркиванием, и содержать два 
         нижних подчёркивания подряд.',
         ])]
+    #[Groups("user")]
     private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\Email(['message' => 'Вы ввели некорректный e-mail'])]
     #[Assert\NotBlank(['message'=>'Вы не ввели почту'])]
+    #[Groups("user")]
     private string $email;
 
 
@@ -59,17 +68,21 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         Также имя не может начиться и заканчиваться нижним подчёркиванием, и содержать два 
         нижних подчёркивания подряд.',
     ])]
+    #[Groups("user")]
     private string $blog_name;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
+    #[Groups("user")]
     private $comments;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class, orphanRemoval: true)]
+    #[Groups("user")]
     private $posts;
 
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\Length(['min' => 10, 'minMessage' => 'Описание слишком короткое.'])]
     #[Assert\NotBlank(['message'=>'Вы не ввели имя'])]
+    #[Groups("user")]
     private string $blog_caption;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -95,6 +108,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'blog')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("user")]
     private $category;
 
     public function __construct()

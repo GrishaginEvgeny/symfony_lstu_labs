@@ -26,7 +26,7 @@ class PostController extends AbstractController
     {
         $post = $postRepository->findOneBy(['id' => $id]);
         $author = $post->getUser();
-        $comments = $commentRepository->findBy(['isModerated' => true, 'id' => $id], ['addDate' => 'DESC']);
+        $comments = $commentRepository->findBy(['isModerated' => true, 'post' => $post], ['addDate' => 'DESC']);
         $form = $this->createForm(CommentType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

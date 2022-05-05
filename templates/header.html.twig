@@ -12,7 +12,14 @@
                     {% if is_granted('ROLE_ADMIN') %}
                     <a href="/admin" type="button" class="btn btn-primary me-2" style="white-space: nowrap;">Админ. Панель</a>
                     {% endif %}
+                    <a href="#" type="button" class="btn btn-primary me-2" id="api_key" style="white-space: nowrap;">Получить API-ключ</a>
+                    <a href="/api" type="button" class="btn btn-primary me-2" id="api_key" style="white-space: nowrap;">API-интерфейс</a>
                     <a href="/logout" type="button" class="btn btn-primary">Выйти</a>
+                    <script>
+                        document.getElementById('api_key').addEventListener('click',()=>{
+                            alert("Ваш API-ключ: {{ app.user.apiToken }}");
+                        })
+                    </script>
                 </div>
             {% else %}
                 <div class="col-4 d-flex justify-content-end align-items-center">

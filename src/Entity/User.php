@@ -90,14 +90,14 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
         'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
         ])]
-    private string $blog_picture;
+    private ?string $blog_picture;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Image([
         'mimeTypes' => ['image/png','image/jpeg','image/jpg','image/bmp'],
         'mimeTypesMessage' => 'Вы загрузили фотографию в некорректном расширении',
         ])]
-    private string $user_avatar;
+    private ?string $user_avatar;
 
     #[ORM\Column(type:"string", unique:true, nullable:true)]
     private $apiToken;

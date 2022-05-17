@@ -42,7 +42,7 @@ class PostController extends AbstractController
 
             $entityManager->persist($new_coment);
             $entityManager->flush();
-            return $this->redirect('/');
+            return $this->redirect('/post/'.$id);
         }
         return $this->render('post/index.html.twig', [
             'controller_name' => 'PostController',
@@ -67,21 +67,22 @@ class PostController extends AbstractController
             $post_avatar = $form->get('avatar')->getData();
             $pictures = $form->get('pictures')->getData();
 
-            $originalFilename = pathinfo($post_avatar->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$post_avatar->guessExtension();
+            if($post_avatar !== null && $pictures !== null) {
+                $originalFilename = pathinfo($post_avatar->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $post_avatar->guessExtension();
 
-            try {
-                $post_avatar->move(
-                    $this->getParameter('post_pictures'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
+                try {
+                    $post_avatar->move(
+                        $this->getParameter('post_pictures'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
 
-            }
+                }
 
-            $files_name=[];
-            foreach($pictures as $picture) {
+                $files_name = [];
+                foreach ($pictures as $picture) {
                     $originalFilename = pathinfo($picture->getClientOriginalName(), PATHINFO_FILENAME);
                     $safeFilename = $slugger->slug($originalFilename);
                     $newFilename = $safeFilename . '-' . uniqid() . '.' . $picture->guessExtension();
@@ -94,10 +95,12 @@ class PostController extends AbstractController
                     } catch (FileException $e) {
 
                     }
+                }
+                $post->setAvatar($newFilename);
+                $post->setPictures($files_name);
+
             }
 
-            $post->setAvatar($newFilename);
-            $post->setPictures($files_name);
             $post->setAddDate(new \DateTime());
             $post->setViewCount(0);
             $post->setUser($this->getUser());

@@ -23,7 +23,7 @@
         <!— body —>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {%  for post in posts %}
-                <div class="col-md-6">
+                <div class="col-md-6 post">
                     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <div class="col p-4 d-flex flex-column position-static">
                             <strong class="d-inline-block mb-2 text-success">{{ post.getUser().getCategory().getName() }}</strong>
@@ -37,7 +37,12 @@
                         </div>
                         <div class="col-auto d-none d-lg-block">
                             <a href="/post/{{ post.getId() }}">
-                                <img class="bi" width="200" height="250" src="{{ asset('uploads/posts/'~post.getAvatar()) }}"/>
+                                <img class="bi" width="200" height="250"
+                                    {% if post.getAvatar() is null %}
+                                     src="{{ asset('/build/images/empty-post-avatar.423ea995.svg') }}"
+                                    {% else %}
+                                     src="{{ asset('uploads/posts/'~post.getAvatar()) }}"
+                                {% endif %}" }}"/>
                             </a>
                         </div>
                     </div>

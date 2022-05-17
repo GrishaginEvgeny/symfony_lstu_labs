@@ -24,10 +24,12 @@ class PostType extends AbstractType
             ->add('avatar', FileType::class, [
                 'label' => 'Аватар поста',
                 'multiple'=> false,
+                'required' => false,
             ])
             ->add('pictures', FileType::class, [
                 'label' => 'Картинки к блогу',
                 'multiple'=> true,
+                'required' => false,
             ]);
         ;
     }

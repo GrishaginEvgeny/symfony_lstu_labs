@@ -46,6 +46,7 @@ class RegistrationFormType extends AbstractType
             ->add('user_avatar', FileType::class, [
                 'label' => 'Фото пользователя',
                 'help' => "Расширении должно быть jpg, png или bmp.",
+                'required' => false,
             ])
             ->add('blog_name',TextType::class, [
                 'label' => 'Название блога',
@@ -62,6 +63,7 @@ class RegistrationFormType extends AbstractType
             ->add('blog_picture', FileType::class, [
                 'label' => 'Фото блога',
                 'help' => "Расширении должно быть jpg, png или bmp.",
+                'required' => false,
             ])
             ->add('agree_checkbox', CheckboxType::class, [
                 'label' => "<a href=\"#\">Принимаю условия пользовательского соглашения</a>",

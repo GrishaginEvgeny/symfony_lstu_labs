@@ -9,14 +9,14 @@
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <img class="rounded-circle shadow-1-strong"
-                     src="{{ asset('uploads/avatars/blogs/'~blog.getBlogPicture()) }}" alt="avatar" width="200"
+                     {% if blog.getBlogPicture() is null %}
+                         src="{{ asset('/build/images/empty-blog-avatar.d7ef8404.svg') }}"
+                     {% else %}
+                         src="{{ asset('uploads/avatars/blogs/'~blog.getBlogPicture()) }}"
+                     {% endif %} alt="avatar" width="200"
                      height="200" />
                 <h1 class="fw-light">{{ blog.getBlogName() }}</h1>
                 <p class="lead text-muted">{{ blog.getBlogCaption() }}</p>
-                <p>
-                    <a href="/user/{{ blog.getName() }}" class="btn btn-primary my-2">Страница автора</a>
-                    <a href="#" class="btn btn-secondary my-2">Подписаться</a>
-                </p>
             </div>
         </div>
     </div>
@@ -29,7 +29,13 @@
                 <div class="col">
                     <div class="card shadow-sm">
                         <a href="/post/{{ post.getId() }}">
-                            <img class="bi" width="100%" height="220" src="{{ asset('uploads/posts/'~post.getPictures()[0]) }}"/>
+                            <img class="bi" width="100%" height="220"
+                            {% if post.getAvatar() is null %}
+                                 src="{{ asset('/build/images/empty-post-avatar.423ea995.svg') }}"
+                            {% else %}
+                                 src="{{ asset('uploads/posts/'~post.getAvatar()) }}"
+                            {% endif %}"
+                            />
                         </a>
                         <div class="card-body">
                             <p class="card-text">{{ post.getText() }}</p>

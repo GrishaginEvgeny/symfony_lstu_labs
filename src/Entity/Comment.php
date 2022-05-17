@@ -12,8 +12,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ApiResource(
     collectionOperations: ["get"],
-    normalizationContext: ['groups' => ['comment']],
     itemOperations: ['get'],
+    normalizationContext: ['validation_groups' => ['comment']],
 )]
 class Comment
 {

@@ -19,11 +19,16 @@ class BlogController extends AbstractController
         );
 
         $posts = $blog->getPosts();
+        $valid_posts = [];
+        foreach ($posts as $post)
+        {
+            if($post->getIsModerated()) array_push($valid_posts, $post);
+        }
 
         return $this->render('blog/index.html.twig', [
             'controller_name' => 'BlogController',
             'blog' => $blog,
-            'posts' => $posts
+            'posts' => $valid_posts
         ]);
     }
 }

@@ -11,3 +11,7 @@ import './icons/logo.svg';
 
 // start the Stimulus application
 import './bootstrap';
+
+import './empty-post-avatar.svg'
+import './empty-user-avatar.svg'
+import './empty-blog-avatar.svg'
